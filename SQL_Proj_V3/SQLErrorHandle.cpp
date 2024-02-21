@@ -7,8 +7,9 @@
 
 void SQLErrorHandle(DataBase *db)
 {
+	
 	if (db->rc != SQLITE_OK)
 	{
-		std::cout << "Error:	" << (db->error) << std::endl;
+		std::cout << "Error:	" << db->error << std::endl;
 	}
 }
