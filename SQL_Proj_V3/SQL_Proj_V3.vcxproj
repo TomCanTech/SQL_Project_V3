@@ -133,7 +133,6 @@
   <ItemGroup>
     <ClCompile Include="..\sqlite\shell.c" />
     <ClCompile Include="..\sqlite\sqlite3.c" />
-    <ClCompile Include="DataBase.cpp" />
     <ClCompile Include="SQLErrorHandle.cpp" />
     <ClCompile Include="SQLInit.cpp" />
     <ClCompile Include="SQLManage.cpp" />
