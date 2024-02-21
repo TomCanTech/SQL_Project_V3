@@ -1,3 +1,0 @@
-﻿  SQLErrorHandle.cpp
-LINK : warning LNK4067: ambiguous entry point; selected 'mainCRTStartup'
-  SQL_Proj_V3.vcxproj -> C:\Users\tomca\source\repos\SQL_Project_V3\Debug\SQL_Proj_V3.exe
