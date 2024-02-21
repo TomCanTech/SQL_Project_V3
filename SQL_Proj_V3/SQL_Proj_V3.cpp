@@ -1,30 +1,17 @@
-#include "sqlite3.h"
+#include <sqlite3.h>
 #include <iostream>
+
+#include "Database.h"
+#include "SQLErrorHandle.h"
+#include "SQLInit.h"
 
 int main()
 {
-	char* error;
-	sqlite3* db;
-	sqlite3_stmt* stmt;
-	sqlite3_open("Databases/myDb.db", &db);
+	DataBase db1;
+	OpenDB(&db1);
 
-	int rc = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));",NULL,NULL,&error);
-	if (rc != SQLITE_OK)
-	{
-		std::cout << "Error:	" << error << std::endl;
-	}
-
-	for (int i = 0; i < 10; i++)
-	{
-		const char* query = "Insert into alimony VALUES (12, 15, 'Your mother');";
-		std::cout << query << std::endl;
-		rc = sqlite3_exec(db, query, NULL, NULL, &error);
-			if (rc != SQLITE_OK)
-			{
-				std::cout << "Error:	" << error << std::endl;
-			}
-	}
-
+	db1.rc = sqlite3_exec(db1.db, "CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));", NULL,NULL,&(db1.error));
+	SQLErrorHandle(&db1);
 
 	return 0;
 }

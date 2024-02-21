@@ -24,5 +24,31 @@
     <ClCompile Include="..\sqlite\sqlite3.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="SQLManage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLErrorHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SQLErrorHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLManage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLInit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

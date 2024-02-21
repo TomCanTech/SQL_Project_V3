@@ -1,3 +1,6 @@
-﻿  SQL_Proj_V3.cpp
-C:\Users\Shepherd\source\repos\SQL_Proj_V3\SQL_Proj_V3\SQL_Proj_V3.cpp(8,16): warning C4101: 'stmt': unreferenced local variable
-  SQL_Proj_V3.vcxproj -> C:\Users\Shepherd\source\repos\SQL_Proj_V3\x64\Debug\SQL_Proj_V3.exe
+﻿  SQLInit.cpp
+LINK : warning LNK4067: ambiguous entry point; selected 'mainCRTStartup'
+SQL_Proj_V3.obj : error LNK2019: unresolved external symbol "void * __cdecl Init(int)" (?Init@@YAPEAXH@Z) referenced in function main
+    Hint on symbols that are defined and could potentially match:
+      "void * __cdecl Init(int &)" (?Init@@YAPEAXAEAH@Z)
+C:\Users\tomca\source\repos\SQL_Project_V3\x64\Debug\SQL_Proj_V3.exe : fatal error LNK1120: 1 unresolved externals
