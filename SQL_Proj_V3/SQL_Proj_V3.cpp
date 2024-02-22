@@ -3,7 +3,7 @@
 
 #include "Database.h"
 #include "SQLErrorHandle.h"
-#include "SQLInit.h"
+#include "DataBaseManip.h"
 
 int main()
 {

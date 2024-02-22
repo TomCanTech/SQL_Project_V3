@@ -30,7 +30,7 @@
     <ClCompile Include="SQLErrorHandle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SQLInit.cpp">
+    <ClCompile Include="DataBaseManip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClInclude Include="SQLManage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SQLInit.h">
+    <ClInclude Include="DataBaseManip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
