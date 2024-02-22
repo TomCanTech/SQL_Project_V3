@@ -41,8 +41,10 @@ void OpenDB(DataBase *db)
 
 	if (stat(cstr_db_path, &sb) != 0)
 	{
-		std::cout << "Making Directory...";
+		std::cout << "Created Databases Dir.";
 		MakeDirectory(&exec_path);
+		db->rc = sqlite3_open(cstr_db_path, &(db->db));
+		SQLErrorHandle(db);
 	}
 	else
 	{
