@@ -74,7 +74,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CONSOLE;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\sqlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -133,7 +133,16 @@
   <ItemGroup>
     <ClCompile Include="..\sqlite\shell.c" />
     <ClCompile Include="..\sqlite\sqlite3.c" />
+    <ClCompile Include="SQLErrorHandle.cpp" />
+    <ClCompile Include="SQLInit.cpp" />
+    <ClCompile Include="SQLManage.cpp" />
     <ClCompile Include="SQL_Proj_V3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SQLErrorHandle.h" />
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="SQLInit.h" />
+    <ClInclude Include="SQLManage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
