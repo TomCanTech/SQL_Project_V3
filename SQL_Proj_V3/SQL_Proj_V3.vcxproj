@@ -134,17 +134,10 @@
     <ClCompile Include="..\sqlite\shell.c" />
     <ClCompile Include="..\sqlite\sqlite3.c" />
     <ClCompile Include="DataBaseClass.cpp" />
-    <ClCompile Include="SQLErrorHandle.cpp" />
-    <ClCompile Include="DataBaseManip.cpp" />
-    <ClCompile Include="SQLManage.cpp" />
     <ClCompile Include="SQL_Proj_V3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBaseClass.hpp" />
-    <ClInclude Include="SQLErrorHandle.h" />
-    <ClInclude Include="Database.h" />
-    <ClInclude Include="DataBaseManip.h" />
-    <ClInclude Include="SQLManage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

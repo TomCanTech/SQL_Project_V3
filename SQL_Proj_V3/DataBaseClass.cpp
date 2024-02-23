@@ -12,33 +12,43 @@ DataBaseCl::DataBaseCl() {
 	sqlite3_stmt* stmt = nullptr;
 	char* error = nullptr;
 	rc = NULL;
+	std::string current_dir = "";
 }
 
 void DataBaseCl::OpenDB()
 	{
-		std::string exec_path = GetCurrentDirectory();
-		const char* cstr_exec_path = exec_path.c_str();
-
-		std::string db_path = exec_path + "\\databases\\database.db";
+		current_dir = GetCurrentDirectory();
+		std::string db_path = current_dir + "\\databases\\database.db";
 		const char* cstr_db_path = db_path.c_str();
 
 		struct stat sb;
 
 		if (stat(cstr_db_path, &sb) != 0)
 		{
-			std::cout << "Created Databases Dir.";
-			MakeDirectory(&exec_path);
-			this->rc = sqlite3_open(cstr_db_path, &(this->db));
-			SQLErrorHandle();
+			std::cout << "Created Databases dir.";
+			MakeDirectory(&current_dir);
 		}
 		else
 		{
 			std::cout << "Directory found.";
-			this->rc = sqlite3_open(cstr_db_path, &(this->db));
-			SQLErrorHandle();
 		}
-
+	this->rc = sqlite3_open(cstr_db_path, &(this->db));
+	SQLErrorHandle();
 	}
+
+void DataBaseCl::ManipDB(std::string SQL_Func){
+	this->rc = sqlite3_exec(this->db, SQL_Func.c_str(), NULL, NULL, &this->error);
+}
+
+void DataBaseCl::CreateDB(std::string DB_Name) {
+
+}
+
+
+void DataBaseCl::CreateTable(std::string Tab_Name) {
+
+}
+
 void DataBaseCl::SQLErrorHandle() 
 	{
 		//Evaluates if database member, return code == 0 a

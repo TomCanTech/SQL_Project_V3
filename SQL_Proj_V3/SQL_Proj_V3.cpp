@@ -5,13 +5,19 @@
 int main()
 {
 	//Initialises database struct; Finds and creates db connection
-	DataBaseCl(db1);
+	static DataBaseCl(db1);
 	db1.OpenDB();
 
 	//Executes SQL code and returns rc into database struct
-	//db1.rc = sqlite3_exec(db1.db, "CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));", NULL,NULL,&(db1.error));
-	//Calls Error Handle in response to sqlite3_exec
-	//db1.SQLErrorHandle();
+	db1.ManipDB("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");
 
+	std::string path  ((db1.current_dir) + "\\databases");
+	std::string command = "dir /a-d ";
+
+	command.append(path);
+	const char* command_cstr = command.c_str();
+
+	system(command_cstr);
+	
 	return 0;
 }
