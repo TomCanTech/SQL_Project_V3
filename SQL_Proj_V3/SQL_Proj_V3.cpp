@@ -1,23 +1,32 @@
 #include <sqlite3.h>
 
 #include "DataBaseClass.hpp"
+#include "DataBaseIO.h"
 
 int main()
 {
-	//Initialises database struct; Finds and creates db connection
-	static DataBaseCl(db1);
-	db1.OpenDB();
+	//Creates DataBase object; Creates UserIO object
+	//static DataBaseCl(db1);
+	static UserIO(foo);
+
+	foo.GetInput();
+
+
+	//db1.OpenDB(foo.RequestDir());
 
 	//Executes SQL code and returns rc into database struct
-	db1.ManipDB("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");
+	//std::string cmd ("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");
+	//db1.ManipDB(&cmd);
 
-	std::string path  ((db1.current_dir) + "\\databases");
-	std::string command = "dir /a-d ";
+	//std::string path  ((db1.current_dir) + "\\databases");
+	//std::string command = "dir /a-d ";
 
-	command.append(path);
-	const char* command_cstr = command.c_str();
+	//command.append(path);
+	//const char* command_cstr = command.c_str();
 
-	system(command_cstr);
-	
+	//system(command_cstr);
+	//
+	//std::string fooIn = foo.GetInput();
+
 	return 0;
 }

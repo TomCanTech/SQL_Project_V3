@@ -17,20 +17,18 @@ class DataBaseCl {
 	sqlite3_stmt* stmt;
 	//Initialises error handling vars
 	char* error;
-	//Contains current dir
 
 public:
 	int rc;
 	std::string current_dir;
+	std::string user_dir;
 	DataBaseCl();
 	//Open DB in .exe folder
-	void OpenDB();
-	void ManipDB(std::string SQL_Func);
-	void CreateDB(std::string DB_Name);
-	void CreateTable(std::string Tab_Name);
+	void OpenDB(std::string* UserDir);
+	void ManipDB(std::string* SQL_Func);
 private:
 	//Error Code
-	void SQLErrorHandle();
+	void SQLErrorHandle() const;
 
 	// DIR Manipulation
 		//Create DB dir in input dir
