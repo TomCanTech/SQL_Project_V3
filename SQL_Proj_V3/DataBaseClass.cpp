@@ -19,6 +19,7 @@ DataBaseCl::DataBaseCl() {
 void DataBaseCl::OpenDB(std::string* UserDir)
 	{
 		current_dir = GetCurrentDirectory();
+
 		std::string db_path = current_dir + "\\databases\\database.db";
 		const char* cstr_db_path = db_path.c_str();
 

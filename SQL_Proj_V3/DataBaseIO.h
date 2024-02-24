@@ -5,11 +5,13 @@
 class UserIO {
 	std::string lastInput;
 	std::string lastCommand;
-	std::string commandParam;
 
-	bool ValidIn;
+	std::string commandParam;
+	std::string InputResponse;
 
 	int IOMode;
+	int InputMode;
+	bool ValidIn;
 
 	void SelectCommand(std::string *TotalIn, DataBaseCl db);
 	bool ValidDir();
