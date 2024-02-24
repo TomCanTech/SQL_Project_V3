@@ -16,22 +16,32 @@ UserIO::UserIO() {
 	int IOMode = 0;
 }
 
-void UserIO::SelectCommand(std::string *TotalIn) {
+void UserIO::SelectCommand(std::string *TotalIn, DataBaseCl db) {
 	std::string CommandWord = "";
 	std::istringstream iss(*TotalIn);
 	iss >> CommandWord;
 
-	if (CommandWord == "cmd") {
+	if (CommandWord == "open") {
 		this->lastCommand = CommandWord;
 		this->ValidIn = true;
+		
 	}
-	else if (CommandWord == "help") {
+	else if (CommandWord == "quit" or CommandWord == "exit") {
 		this->lastCommand = CommandWord;
 		this->ValidIn = true;
+
+
 		}
 	else {
 		this -> ValidIn = false;
 		}
+
+
+	int CharDelete = CommandWord.size() + 1;
+	std::string tempString = *TotalIn;
+	tempString.erase(0,CharDelete);
+	this->commandParam = tempString;
+
 }
 
 
@@ -43,7 +53,7 @@ std::string UserIO::GetInput() {
 		std::getline(std::cin, buffer);
 		this->lastInput = buffer;
 
-		this->SelectCommand(&buffer);
+		this->SelectCommand(&buffer,db);
 
 	}
 	return buffer;
