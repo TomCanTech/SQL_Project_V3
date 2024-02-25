@@ -14,14 +14,13 @@ class UserIO {
 	bool ValidIn;
 	bool WaitingInput;
 
-	void SelectCommand(std::string *TotalIn, DataBaseCl db);
+	void SelectCommand(std::string *TotalIn);
 	void ExitHandle();
 	void EnterHandle(std::string path);
-	bool ValidPath(std::string path);
+	bool ValidPath(std::string* path);
 
 	void GetCommandParam(std::string TotalIn);
 	std::string GetCommand(std::string TotalIn);
-
 	DataBaseCl db;
 public:
 	std::string GetInput();

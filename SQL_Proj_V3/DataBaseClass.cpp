@@ -8,18 +8,22 @@
 #include "DataBaseClass.hpp"
 
 DataBaseCl::DataBaseCl() {
+	//Actual db object for use within library
 	sqlite3* db = nullptr;
+	//???
 	sqlite3_stmt* stmt = nullptr;
+	//Pointer containing error num
 	char* error = nullptr;
-	rc = NULL;
-	std::string current_dir = "";
+	//Error/State code
+	int rc = NULL;
+	//Default directory
+	this->current_dir = GetCurrentDirectory();
+	//Directory input by user
 	std::string user_dir = "";
 }
 
 void DataBaseCl::OpenDB(std::string* UserDir)
 	{
-		current_dir = GetCurrentDirectory();
-
 		std::string db_path = current_dir + "\\databases\\database.db";
 		const char* cstr_db_path = db_path.c_str();
 
@@ -34,24 +38,23 @@ void DataBaseCl::OpenDB(std::string* UserDir)
 		{
 			std::cout << "Directory found.";
 		}
-	this->rc = sqlite3_open(cstr_db_path, &(this->db));
+	this->m_rc = sqlite3_open(cstr_db_path, &(this->db));
 	SQLErrorHandle();
 	}
 
-void DataBaseCl::ManipDB(std::string* SQL_Func){
-	this->rc = sqlite3_exec(this->db, SQL_Func->c_str(), NULL, NULL, &this->error);
-}
 
 void DataBaseCl::SQLErrorHandle() const 
 	{
 		//Evaluates if database member, return code == 0 a
-		if (this->rc != SQLITE_OK)
+		if (this->m_rc != SQLITE_OK)
 		{
 			std::cout << "Error:	" << this->error << std::endl;
 		}
 	}
 
-
+void DataBaseCl::ManipDB(std::string* SQL_Func){
+	this->m_rc = sqlite3_exec(this->db, SQL_Func->c_str(), NULL, NULL, &this->error);
+}
 int DataBaseCl::MakeDirectory(std::string *path)
 	{
 		std::string buf(*path);
@@ -73,4 +76,3 @@ std::string DataBaseCl::GetCurrentDirectory()
 
 		return std::string(buffer).substr(0, pos);
 	}
-

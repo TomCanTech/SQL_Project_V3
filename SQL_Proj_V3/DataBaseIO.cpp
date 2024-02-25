@@ -17,8 +17,11 @@ UserIO::UserIO() {
 	int IOMode = NULL;
 	int InputMode = NULL;
 
+	DataBaseCl* db;
+
 	bool ValidIn = false;
 	bool WaitingInput = true;
+
 }
 
 std::string UserIO::GetInput() {
@@ -31,7 +34,7 @@ std::string UserIO::GetInput() {
 			std::getline(std::cin, buffer);
 			this->lastInput = buffer;
 
-			this->SelectCommand(&buffer, db);
+			this->SelectCommand(&buffer);
 		}
 		break;
 	case(1):
@@ -43,7 +46,7 @@ std::string UserIO::GetInput() {
 	return buffer;
 }
 
-void UserIO::SelectCommand(std::string *TotalIn, DataBaseCl db) {
+void UserIO::SelectCommand(std::string *TotalIn) {
 	std::string CommandWord = GetCommand(*TotalIn);
 	GetCommandParam(*TotalIn);
 
@@ -111,23 +114,26 @@ void UserIO::GetCommandParam(std::string TotalIn) {
 void UserIO::EnterHandle(std::string path) {
 	
 	if (path == "default") {
-
+		std::string default_path = db.current_dir + "\\databases";
+		if (ValidPath(&default_path)) {
+			std::cout << "Using default path" << std::endl;
+		}
 	}
-	else if(ValidPath(path)) {
-
+	else if(ValidPath(&path)) {
+		db.user_dir = path;
+		std::cout << "Path found." << std::endl;
 	}
 	else {
-		std::cout << "Invalid path. Please try another path.";
+		std::cout << "Invalid path. Please try another path." << std::endl;
 	}
 
 }
 
-bool UserIO::ValidPath(std::string path) {
+bool UserIO::ValidPath(std::string* path) {
 	struct stat sb;
 
-	if (stat(path.c_str(), &sb) == 0)
+	if (stat(path->c_str(), &sb) == 0)
 		return true;
 	else
-
 		return false;
 }

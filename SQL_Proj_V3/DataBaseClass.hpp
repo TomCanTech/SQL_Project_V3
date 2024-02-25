@@ -7,7 +7,6 @@
 #include <iostream>
 #include <direct.h>
 
-
 class DataBaseCl {
 
 	//DB Variables
@@ -19,13 +18,15 @@ class DataBaseCl {
 	char* error;
 
 public:
-	int rc;
+	int m_rc;
 	std::string current_dir;
 	std::string user_dir;
 	DataBaseCl();
 	//Open DB in .exe folder
 	void OpenDB(std::string* UserDir);
 	void ManipDB(std::string* SQL_Func);
+	std::string GetCurrentDirectory();
+
 private:
 	//Error Code
 	void SQLErrorHandle() const;
@@ -34,5 +35,4 @@ private:
 		//Create DB dir in input dir
 	int MakeDirectory(std::string* path);
 		//Obtain .exe path
-	std::string GetCurrentDirectory();
 };

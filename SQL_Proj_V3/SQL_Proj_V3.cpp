@@ -5,27 +5,27 @@
 
 int main()
 {
-	static DataBaseCl(db1);
-	static UserIO(foo);
+	static DataBaseCl db{};
+	static UserIO (foo);
 
 
 	foo.GetInput();
 
 
 
-	//Executes SQL code and returns rc into database struct
-	std::string cmd ("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");
-	db1.ManipDB(&cmd);
+	////Executes SQL code and returns rc into database struct
+	//std::string cmd ("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");
+	//db1.ManipDB(&cmd);
 
-	std::string path  ((db1.current_dir) + "\\databases");
-	std::string command = "dir /a-d ";
+	//std::string path  ((db1.current_dir) + "\\databases");
+	//std::string command = "dir /a-d ";
 
-	command.append(path);
-	const char* command_cstr = command.c_str();
+	//command.append(path);
+	//const char* command_cstr = command.c_str();
 
-	system(command_cstr);
-	
-	std::string fooIn = foo.GetInput();
+	//system(command_cstr);
+	//
+	//std::string fooIn = foo.GetInput();
 
 	return 0;
 }
