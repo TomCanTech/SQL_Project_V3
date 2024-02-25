@@ -7,32 +7,21 @@
 #include <iostream>
 #include <direct.h>
 
-class DataBaseCl {
+#include "Directory.h"
 
-	//DB Variables
-		//Initialises database object
+class DataBaseCl {
 	sqlite3* db;
-	//Initialises SQL readable code
 	sqlite3_stmt* stmt;
-	//Initialises error handling vars
 	char* error;
 
+	DirectoryHandle dir;
 public:
-	int m_rc;
-	std::string current_dir;
-	std::string user_dir;
+	int rc;
 	DataBaseCl();
-	//Open DB in .exe folder
-	void OpenDB(std::string* UserDir);
+	void OpenDB();
 	void ManipDB(std::string* SQL_Func);
-	std::string GetCurrentDirectory();
 
 private:
 	//Error Code
 	void SQLErrorHandle() const;
-
-	// DIR Manipulation
-		//Create DB dir in input dir
-	int MakeDirectory(std::string* path);
-		//Obtain .exe path
 };

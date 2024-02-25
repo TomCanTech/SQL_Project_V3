@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataBaseClass.hpp"
+#include "Directory.h"
 
 class UserIO {
 	std::string lastInput;
@@ -24,7 +25,9 @@ class UserIO {
 
 	void DirectoryMode(std::string CommandWord);
 	void DataBaseMode(std::string CommandWord);
+
 	DataBaseCl db;
+	DirectoryHandle dir;
 public:
 	std::string GetInput();
 	UserIO();

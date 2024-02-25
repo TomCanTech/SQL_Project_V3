@@ -6,40 +6,41 @@
 
 #include "DataBaseIO.h"
 #include "DataBaseClass.hpp"
+#include "Directory.h"
 
 UserIO::UserIO() {
-	std::string lastInput = "";
-	std::string lastCommand = "";
-	std::string commandParam = "";
+	lastInput = "hello";
+	lastCommand = "";
+	commandParam = "";
 
-	std::string InputResponse = "";
+	InputResponse = "";
 
-	int IOMode = NULL;
-	int InputMode = NULL;
+	IOMode = NULL;
+	InputMode = NULL;
 
-	DataBaseCl* db;
+	db;
 
-	bool ValidIn = false;
-	bool WaitingInput = true;
 
+	ValidIn = false;
+	WaitingInput = true;
 }
 
 std::string UserIO::GetInput() {
 	std::string buffer;
 
-	switch (this->InputMode){
+	switch (InputMode){
 	case (0):
 		while (true) {
 
 			std::getline(std::cin, buffer);
-			this->lastInput = buffer;
+			lastInput = buffer;
 
-			this->SelectCommand(&buffer);
+			SelectCommand(&buffer);
 		}
 		break;
 	case(1):
 		std::getline(std::cin, buffer);
-		this->InputResponse = buffer;
+		InputResponse = buffer;
 
 		break;
 	} 
@@ -72,22 +73,22 @@ std::string UserIO::GetCommand(std::string TotalIn) {
 	std::istringstream iss(TotalIn);
 	iss >> CommandWord;
 
-	this->lastCommand = CommandWord;
+	lastCommand = CommandWord;
 
 	return CommandWord;
 }
 
 void UserIO::GetCommandParam(std::string TotalIn) {
 
-	int CharDelete = (this->lastCommand).size() + 1;
+	int CharDelete = (lastCommand).size() + 1;
 	std::string tempString = TotalIn;
 	tempString.erase(0, CharDelete);
-	this->commandParam = tempString;
+	commandParam = tempString;
 }
 
 void UserIO::DirectoryMode(std::string CommandWord) {
 	if (CommandWord == "open" or CommandWord == "enter") {
-		EnterHandle(this->commandParam);
+		EnterHandle(commandParam);
 	}
 	else if (CommandWord == "quit" or CommandWord == "exit") {
 		ExitHandle();
@@ -96,21 +97,20 @@ void UserIO::DirectoryMode(std::string CommandWord) {
 	}
 	else
 	{
-		this->ValidIn = false;
+		ValidIn = false;
 	}
 }
 
 void UserIO::EnterHandle(std::string path) {
 	
 	if (path == "default") {
-		std::string default_path = db.current_dir;
-		if (ValidPath(&default_path)) {
-			std::cout << "Using default path" << std::endl;
-			IOMode = 1;
-		}
+	
+		std::cout << "Using default path" << std::endl;
+		IOMode = 1;
+		
 	}
 	else if(ValidPath(&path)) {
-		db.user_dir = (path + "\\databases");
+		dir.user_dir = (path + "\\databases");
 		std::cout << "Path found." << std::endl;
 		IOMode = 1;
 	}
@@ -122,7 +122,6 @@ void UserIO::EnterHandle(std::string path) {
 
 bool UserIO::ValidPath(std::string* path) {
 	struct stat sb;
-
 	if (stat(path->c_str(), &sb) == 0)
 		return true;
 	else
@@ -133,22 +132,22 @@ void UserIO::ExitHandle() {
 	{
 		std::cout << "Would you like to exit the program: Y / N ?" << std::endl;
 
-		this->InputMode = 1;
+		InputMode = 1;
 
-		while ((this->WaitingInput) or InputMode == 1) {
-			std::string Input = this->GetInput();
+		while ((WaitingInput) or InputMode == 1) {
+			std::string Input = GetInput();
 
 			if (Input == "Y") {
-				this->ValidIn = true;
+				ValidIn = true;
 				exit(0);
 			}
 			else if (Input == "N") {
-				this->InputMode = 0;
-				this->ValidIn = true;
+				InputMode = 0;
+				ValidIn = true;
 			}
 			else {
 				std::cout << "That is not a valid response, please try again." << std::endl;
-				this->WaitingInput = true;
+				WaitingInput = true;
 			}
 			
 		}
@@ -158,7 +157,7 @@ void UserIO::ExitHandle() {
 void UserIO::DataBaseMode(std::string CommandWord) {
 	if (CommandWord == "open" or CommandWord == "enter") {
 		this->ValidIn = true;
-		db.OpenDB(&this->commandParam);
+		db.OpenDB();
 		this->IOMode = 2;
 	}
 	else if (CommandWord == "quit") {

@@ -2,12 +2,13 @@
 
 #include "DataBaseClass.hpp"
 #include "DataBaseIO.h"
+#include "Directory.h"
 
 int main()
 {
-	static DataBaseCl db{};
-	static UserIO (foo);
-
+	static DirectoryHandle dir;
+	static DataBaseCl db;
+	static UserIO foo;
 
 	foo.GetInput();
 
