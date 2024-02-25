@@ -21,6 +21,9 @@ class UserIO {
 
 	void GetCommandParam(std::string TotalIn);
 	std::string GetCommand(std::string TotalIn);
+
+	void DirectoryMode(std::string CommandWord);
+	void DataBaseMode(std::string CommandWord);
 	DataBaseCl db;
 public:
 	std::string GetInput();
