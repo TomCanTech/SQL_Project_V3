@@ -12,7 +12,6 @@ int main()
 	foo.GetInput();
 
 
-	db1.OpenDB(foo.RequestDir());
 
 	//Executes SQL code and returns rc into database struct
 	std::string cmd ("CREATE TABLE IF NOT EXISTS alimony(x1 INT, x2 INT, name varchar(100));");

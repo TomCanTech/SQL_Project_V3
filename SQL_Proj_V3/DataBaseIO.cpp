@@ -17,6 +17,7 @@ UserIO::UserIO() {
 	int InputMode = NULL;
 
 	bool ValidIn = false;
+	bool WaitingInput = true;
 }
 
 std::string UserIO::GetInput() {
@@ -38,64 +39,70 @@ std::string UserIO::GetInput() {
 
 		break;
 	} 
-	
-
 	return buffer;
 }
 
 void UserIO::SelectCommand(std::string *TotalIn, DataBaseCl db) {
-	std::string CommandWord = "";
-	std::istringstream iss(*TotalIn);
-	iss >> CommandWord;
-
-
-	int CharDelete = CommandWord.size() + 1;
-	std::string tempString = *TotalIn;
-	tempString.erase(0, CharDelete);
-	this->commandParam = tempString;
+	std::string CommandWord = GetCommand(*TotalIn);
+	GetCommandParam(*TotalIn);
 
 	if (CommandWord == "open") {
-		this->lastCommand = CommandWord;
 		this->ValidIn = true;
 		db.OpenDB(&this->commandParam);
 	}
 	else if (CommandWord == "quit" or CommandWord == "exit") {
-		std::cout << "Would you like to exit the program: Y / N ?";
+		ExitHandle();
+	}
+	else if (CommandWord == "enter") {
 
-		this->InputMode = 1;
-
-		std::string Input = this->GetInput();
-
-		if (Input == "Y") {
-			this->ValidIn = true;
-			exit(0);
-		}
-		else if (Input == "N") {
-			this->InputMode = 0;
-			this->ValidIn = true;
-		}
-
-		this->lastCommand = CommandWord;
-		this->ValidIn = true;
-		}
-	else {
+	} else
+	{
 		this -> ValidIn = false;
 		}
 
 }
 
-std::string* UserIO::RequestDir() {
-	std::string InputDir = this->GetInput();
+void UserIO::ExitHandle() {
+	{
+		std::cout << "Would you like to exit the program: Y / N ?" << std::endl;
 
-	if (this->ValidDir()) {
-		return &InputDir;
-	}
-	else {
-		return nullptr;
+		this->InputMode = 1;
+
+		while ((this->WaitingInput) or InputMode == 1) {
+			std::string Input = this->GetInput();
+
+			if (Input == "Y") {
+				this->ValidIn = true;
+				exit(0);
+			}
+			else if (Input == "N") {
+				this->InputMode = 0;
+				this->ValidIn = true;
+			}
+			else {
+				std::cout << "That is not a valid response, please try again." << std::endl;
+				this->WaitingInput = true;
+			}
+			
+		}
 	}
 }
 
+std::string UserIO::GetCommand(std::string TotalIn) {
 
-bool UserIO::ValidDir() {
-	return true;
+	std::string CommandWord = "";
+	std::istringstream iss(TotalIn);
+	iss >> CommandWord;
+
+	this->lastCommand = CommandWord;
+
+	return CommandWord;
+}
+
+void UserIO::GetCommandParam(std::string TotalIn) {
+
+	int CharDelete = (this->lastCommand).size() + 1;
+	std::string tempString = TotalIn;
+	tempString.erase(0, CharDelete);
+	this->commandParam = tempString;
 }

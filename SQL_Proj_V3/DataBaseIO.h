@@ -12,12 +12,16 @@ class UserIO {
 	int IOMode;
 	int InputMode;
 	bool ValidIn;
+	bool WaitingInput;
 
 	void SelectCommand(std::string *TotalIn, DataBaseCl db);
-	bool ValidDir();
+	void ExitHandle();
+
+	void GetCommandParam(std::string TotalIn);
+	std::string GetCommand(std::string TotalIn);
+
 	DataBaseCl db;
 public:
-	std::string* RequestDir();
 	std::string GetInput();
 	UserIO();
 };
