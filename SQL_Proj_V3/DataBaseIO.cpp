@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "DataBaseIO.h"
 #include "DataBaseClass.hpp"
@@ -9,8 +10,8 @@
 UserIO::UserIO() {
 	std::string lastInput = "";
 	std::string lastCommand = "";
-
 	std::string commandParam = "";
+
 	std::string InputResponse = "";
 
 	int IOMode = NULL;
@@ -54,7 +55,7 @@ void UserIO::SelectCommand(std::string *TotalIn, DataBaseCl db) {
 		ExitHandle();
 	}
 	else if (CommandWord == "enter") {
-
+		EnterHandle(this->commandParam);
 	} else
 	{
 		this -> ValidIn = false;
@@ -105,4 +106,28 @@ void UserIO::GetCommandParam(std::string TotalIn) {
 	std::string tempString = TotalIn;
 	tempString.erase(0, CharDelete);
 	this->commandParam = tempString;
+}
+
+void UserIO::EnterHandle(std::string path) {
+	
+	if (path == "default") {
+
+	}
+	else if(ValidPath(path)) {
+
+	}
+	else {
+		std::cout << "Invalid path. Please try another path.";
+	}
+
+}
+
+bool UserIO::ValidPath(std::string path) {
+	struct stat sb;
+
+	if (stat(path.c_str(), &sb) == 0)
+		return true;
+	else
+
+		return false;
 }
