@@ -11,7 +11,7 @@ struct DirectoryHandle {
 	std::string default_db_path;
 	std::string user_db_path;
 
-	bool ValidPath(std::string*path);
+	bool ValidPath(std::string path);
 	int MakeDir(std::string *path);
 private:
 	std::string SetDefaultDirectory();

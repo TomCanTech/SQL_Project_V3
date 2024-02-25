@@ -18,7 +18,8 @@ class UserIO {
 	void SelectCommand(std::string *TotalIn);
 	void ExitHandle();
 	void EnterHandle(std::string path);
-	bool ValidPath(std::string* path);
+
+	void DataBaseEnterHandle(std::string FileName);
 
 	void GetCommandParam(std::string TotalIn);
 	std::string GetCommand(std::string TotalIn);

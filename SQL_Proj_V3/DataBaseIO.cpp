@@ -20,7 +20,6 @@ UserIO::UserIO() {
 
 	db;
 
-
 	ValidIn = false;
 	WaitingInput = true;
 }
@@ -63,7 +62,6 @@ void UserIO::SelectCommand(std::string* TotalIn) {
 	case 2: {
 		
 	}
-
 	}
 }
 
@@ -74,7 +72,6 @@ std::string UserIO::GetCommand(std::string TotalIn) {
 	iss >> CommandWord;
 
 	lastCommand = CommandWord;
-
 	return CommandWord;
 }
 
@@ -109,7 +106,7 @@ void UserIO::EnterHandle(std::string path) {
 		IOMode = 1;
 		
 	}
-	else if(ValidPath(&path)) {
+	else if(dir.ValidPath(path)) {
 		dir.user_dir = (path + "\\databases");
 		std::cout << "Path found." << std::endl;
 		IOMode = 1;
@@ -118,14 +115,6 @@ void UserIO::EnterHandle(std::string path) {
 		std::cout << "Invalid path. Please try another path." << std::endl;
 	}
 
-}
-
-bool UserIO::ValidPath(std::string* path) {
-	struct stat sb;
-	if (stat(path->c_str(), &sb) == 0)
-		return true;
-	else
-		return false;
 }
 
 void UserIO::ExitHandle() {
@@ -156,20 +145,28 @@ void UserIO::ExitHandle() {
 
 void UserIO::DataBaseMode(std::string CommandWord) {
 	if (CommandWord == "open" or CommandWord == "enter") {
-		this->ValidIn = true;
-		db.OpenDB();
-		this->IOMode = 2;
+		ValidIn = true;
+		DataBaseEnterHandle(commandParam);
+		IOMode = 2;
 	}
 	else if (CommandWord == "quit") {
 		ExitHandle();
 	}
 	else if (CommandWord == "return") {
 		std::cout << "Returning to directory mode" << std::endl;
-		this->IOMode = 0;
-
+		IOMode = 0;
 	}
 	else
 	{
-		this->ValidIn = false;
+		ValidIn = false;
+	}
+}
+
+void UserIO::DataBaseEnterHandle(std::string FileName) {
+	if (commandParam == "default") {
+
+	}
+	else if (dir.ValidPath(dir.user_dir + FileName)) {
+
 	}
 }

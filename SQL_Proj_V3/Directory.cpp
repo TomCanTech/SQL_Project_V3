@@ -23,9 +23,9 @@ std::string DirectoryHandle::SetDefaultDirectory()
 	return std::string(buffer).substr(0, pos);
 }
 
-bool DirectoryHandle::ValidPath(std::string* path) {
+bool DirectoryHandle::ValidPath(std::string path) {
 	struct stat sb;
-	if (stat(path->c_str(), &sb) == 0)
+	if (stat(path.c_str(), &sb) == 0)
 		return true;
 	else
 		return false;
