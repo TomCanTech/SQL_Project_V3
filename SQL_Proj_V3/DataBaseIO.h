@@ -26,6 +26,9 @@ class UserIO {
 
 	void DirectoryMode(std::string CommandWord);
 	void DataBaseMode(std::string CommandWord);
+	void TableMode(std::string CommandWord);
+
+	void CreateTable();
 
 	DataBaseCl db;
 	DirectoryHandle dir;

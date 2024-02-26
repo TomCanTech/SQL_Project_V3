@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <vector>
 
 #include "DataBaseIO.h"
 #include "DataBaseClass.hpp"
@@ -74,7 +75,7 @@ void UserIO::SelectCommand(std::string* TotalIn) {
 	std::string CommandWord = GetCommand(*TotalIn);
 	GetCommandParam(*TotalIn);
 
-	if (lastCommand == "quit" or "exit") {
+	if (lastCommand == "quit" or lastCommand == "exit") {
 		ExitHandle();
 	}
 
@@ -88,6 +89,7 @@ void UserIO::SelectCommand(std::string* TotalIn) {
 		break;
 	}
 	case 2: {
+		TableMode(CommandWord);
 		break;
 	}
 	}
@@ -144,6 +146,7 @@ void UserIO::ExitHandle() {
 			}
 			else {
 				std::cout << "That is not a valid response, please try again." << std::endl;
+				ValidIn = false;
 				WaitingInput = true;
 			}
 		}
@@ -169,10 +172,70 @@ void UserIO::DataBaseMode(std::string CommandWord) {
 void UserIO::DataBaseEnterHandle(std::string FileName) {
 	if (commandParam == "default") {
 		std::cout << "Opening default database" << std::endl;
-		dir.default_db_path;
+		db.OpenDB();
 	}
 	else if (dir.ValidPath(dir.user_dir + FileName)) {
 
 	}
 
+}
+
+void UserIO::TableMode(std::string CommandWord) {
+	if (CommandWord == "list") {
+		db.ListTable(commandParam);
+	}
+	else if (CommandWord == "tablemake") {
+		CreateTable();
+	}
+	else if (CommandWord == "quit" or CommandWord == "exit") {
+		ExitHandle();
+	}
+}
+
+void UserIO::CreateTable() {
+	std::cout << "What would you like to call the table: " << std::endl;
+	InputMode = 1;
+	std::string TableName = GetInput();
+	std::cout << "How many headers would you like: " << std::endl;
+	std::string TableHeadNum;
+ 
+	ValidIn = false;
+	while (ValidIn == false) {
+		std::string TableHeadNumStr = GetInput();
+		for (int i = 0; i < TableHeadNumStr.length(); i++)
+			if (isdigit(TableHeadNumStr[i]) == false) {
+				ValidIn = false;
+				break;
+			}
+			else {
+				ValidIn = true;
+			}
+		if (ValidIn == true) {
+			WaitingInput = false;
+			TableHeadNum = TableHeadNumStr;
+		}
+		else if (ValidIn == false) {
+			std::cout << "That is not a valid response. Please try again." << std::endl;
+		}
+	}
+	WaitingInput = true;
+
+	std::vector<std::string> HeadNames;
+	for (int i = 0; i < stoi(TableHeadNum); i++) {
+		std::cout << "What is the title of header number " << (i + 1) << ":" << std::endl;
+		HeadNames.push_back(GetInput());
+	}
+	
+	std::string HeadsInOrder = "";
+	for (int i = 0; i < stoi(TableHeadNum); i++) {
+		HeadsInOrder = HeadsInOrder + HeadNames.at(i) + " varchar(150),";
+	}
+	
+	if (!HeadsInOrder.empty()) {
+		HeadsInOrder.pop_back();
+	}
+
+	std::string SQL_Code = TableName + "(" + HeadsInOrder + ")";
+
+	db.CreateTable(SQL_Code);
 }
