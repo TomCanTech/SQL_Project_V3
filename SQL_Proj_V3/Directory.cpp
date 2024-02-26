@@ -12,6 +12,8 @@ DirectoryHandle::DirectoryHandle() {
 
 	default_db_path = default_dir + "\\database.db";
 	user_db_path = "";
+
+	current_path = 0;
 }
 
 std::string DirectoryHandle::SetDefaultDirectory()

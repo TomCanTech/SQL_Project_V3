@@ -25,44 +25,31 @@ UserIO::UserIO() {
 }
 
 std::string UserIO::GetInput() {
-	std::string buffer;
+	std::string Input;
 
 	switch (InputMode){
 	case (0):
-		while (true) {
+		while (WaitingInput) {
+			std::string buffer;
 
 			std::getline(std::cin, buffer);
 			lastInput = buffer;
 
 			SelectCommand(&buffer);
+
+			Input = buffer;
 		}
 		break;
 	case(1):
+		std::string buffer;
+
 		std::getline(std::cin, buffer);
 		InputResponse = buffer;
 
+		Input = buffer;
 		break;
 	} 
-	return buffer;
-}
-
-void UserIO::SelectCommand(std::string* TotalIn) {
-	std::string CommandWord = GetCommand(*TotalIn);
-	GetCommandParam(*TotalIn);
-
-	switch (IOMode) {
-	case 0: {
-		DirectoryMode(CommandWord);
-		break;
-	}
-	case 1: {
-		DataBaseMode(CommandWord);
-		break;
-	}
-	case 2: {
-		
-	}
-	}
+	return Input;
 }
 
 std::string UserIO::GetCommand(std::string TotalIn) {
@@ -83,12 +70,32 @@ void UserIO::GetCommandParam(std::string TotalIn) {
 	commandParam = tempString;
 }
 
+void UserIO::SelectCommand(std::string* TotalIn) {
+	std::string CommandWord = GetCommand(*TotalIn);
+	GetCommandParam(*TotalIn);
+
+	if (lastCommand == "quit" or "exit") {
+		ExitHandle();
+	}
+
+	switch (IOMode) {
+	case 0: {
+		DirectoryMode(CommandWord);
+		break;
+	}
+	case 1: {
+		DataBaseMode(CommandWord);
+		break;
+	}
+	case 2: {
+		break;
+	}
+	}
+}
+
 void UserIO::DirectoryMode(std::string CommandWord) {
 	if (CommandWord == "open" or CommandWord == "enter") {
 		EnterHandle(commandParam);
-	}
-	else if (CommandWord == "quit" or CommandWord == "exit") {
-		ExitHandle();
 	}
 	else if (CommandWord == "enter") {
 	}
@@ -98,21 +105,22 @@ void UserIO::DirectoryMode(std::string CommandWord) {
 	}
 }
 
-void UserIO::EnterHandle(std::string path) {
+void UserIO::EnterHandle(std::string directory) {
 	
-	if (path == "default") {
+	if (directory == "default") {
 	
-		std::cout << "Using default path" << std::endl;
+		std::cout << "Using default directory" << std::endl;
 		IOMode = 1;
-		
+		dir.current_path = 0;
 	}
-	else if(dir.ValidPath(path)) {
-		dir.user_dir = (path + "\\databases");
-		std::cout << "Path found." << std::endl;
+	else if(dir.ValidPath(directory)) {
+		dir.user_dir = (directory);
+		std::cout << "Using user-defined directory." << std::endl;
 		IOMode = 1;
+		dir.current_path = 1;
 	}
 	else {
-		std::cout << "Invalid path. Please try another path." << std::endl;
+		std::cout << "Invalid directory. Please try another directory." << std::endl;
 	}
 
 }
@@ -138,7 +146,6 @@ void UserIO::ExitHandle() {
 				std::cout << "That is not a valid response, please try again." << std::endl;
 				WaitingInput = true;
 			}
-			
 		}
 	}
 }
@@ -148,9 +155,6 @@ void UserIO::DataBaseMode(std::string CommandWord) {
 		ValidIn = true;
 		DataBaseEnterHandle(commandParam);
 		IOMode = 2;
-	}
-	else if (CommandWord == "quit") {
-		ExitHandle();
 	}
 	else if (CommandWord == "return") {
 		std::cout << "Returning to directory mode" << std::endl;
@@ -164,9 +168,11 @@ void UserIO::DataBaseMode(std::string CommandWord) {
 
 void UserIO::DataBaseEnterHandle(std::string FileName) {
 	if (commandParam == "default") {
-
+		std::cout << "Opening default database" << std::endl;
+		dir.default_db_path;
 	}
 	else if (dir.ValidPath(dir.user_dir + FileName)) {
 
 	}
+
 }
