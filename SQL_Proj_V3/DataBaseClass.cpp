@@ -31,6 +31,7 @@ void DataBaseCl::OpenDB()
 
 void DataBaseCl::ManipDB(std::string* SQL_Func){
 	rc = sqlite3_exec(db, SQL_Func->c_str(), NULL, NULL, &error);
+	SQLErrorHandle();
 }
 	
 void DataBaseCl::SQLErrorHandle() const 
