@@ -187,6 +187,9 @@ void UserIO::TableMode(std::string CommandWord) {
 	else if (CommandWord == "tablemake") {
 		CreateTable();
 	}
+	else if (CommandWord == "headers") {
+		QueryTableHeaders();
+	}
 	else if (CommandWord == "quit" or CommandWord == "exit") {
 		ExitHandle();
 	}
@@ -238,4 +241,9 @@ void UserIO::CreateTable() {
 	std::string SQL_Code = TableName + "(" + HeadsInOrder + ")";
 
 	db.CreateTable(SQL_Code);
+}
+
+void UserIO::QueryTableHeaders() {
+	std::string SQL_query = "SELECT name FROM PRAGMA_table_info('" + commandParam + "');";
+	db.ManipDB(&SQL_query);
 }

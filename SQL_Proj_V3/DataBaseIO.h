@@ -29,6 +29,8 @@ class UserIO {
 	void TableMode(std::string CommandWord);
 
 	void CreateTable();
+	void QueryTableHeaders();
+
 
 	DataBaseCl db;
 	DirectoryHandle dir;

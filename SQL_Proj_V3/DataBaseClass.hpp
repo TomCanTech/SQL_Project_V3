@@ -26,6 +26,7 @@ public:
 	void ListTable(std::string CommandParam);
 	void CreateTable(std::string CommandParam);
 	static int callback(void* NotUsed, int argc, char** argv, char** azColName);
+	static int callbacknoheader(void* NotUsed, int argc, char** argv, char** azColName);
 private:
 	//Error Code
 	void SQLErrorHandle() const;

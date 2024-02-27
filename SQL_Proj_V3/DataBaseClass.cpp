@@ -23,12 +23,21 @@ DataBaseCl::DataBaseCl() {
 int DataBaseCl::callback(void* NotUsed, int argc, char** argv, char** azColName) {
 	int i;
 	for (i = 0; i < argc; i++) {
-		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		printf("%s = %s", azColName[i], argv[i] ? argv[i] : "NULL");
 	}
 	printf("\n");
 	return 0;
 }
 
+int DataBaseCl::callbacknoheader(void* NotUsed, int argc, char** argv, char** azColName) {
+	int i;
+	for (i = 0; i < argc; i++) {
+		std::cout << "--) ";
+		printf("%s", argv[i] ? argv[i] : "NULL");
+	}
+	printf("\n");
+	return 0;
+}
 
 void DataBaseCl::OpenDB(){
 		const char* cstr_db_path = dir.default_db_path.c_str();
@@ -39,13 +48,13 @@ void DataBaseCl::OpenDB(){
 
 
 void DataBaseCl::ManipDB(std::string* SQL_Func){
-	rc = sqlite3_exec(db, SQL_Func->c_str(), NULL, NULL, &error);
+	rc = sqlite3_exec(db, SQL_Func->c_str(), callbacknoheader, NULL, &error);
 	SQLErrorHandle();
 }
 
 void DataBaseCl::ListTable(std::string CommandParam) {
 	const char* TableNames = "SELECT name FROM sqlite_schema WHERE type = 'table' ORDER BY name; ";
-	rc = sqlite3_exec(db, TableNames, callback, NULL, &error);
+	rc = sqlite3_exec(db, TableNames, callbacknoheader, NULL, &error);
 	SQLErrorHandle();
 }
 
@@ -54,6 +63,7 @@ void DataBaseCl::CreateTable(std::string CommandParam) {
 	const char* TableSQL_c = TableSQL.c_str();
 
 	rc = sqlite3_exec(db, TableSQL_c, callback, NULL, &error);
+	SQLErrorHandle();
 }
 
 void DataBaseCl::SQLErrorHandle() const {
