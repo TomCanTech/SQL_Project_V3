@@ -2,11 +2,9 @@
 
 #include "DataBaseClass.hpp"
 #include "DataBaseIO.h"
-#include "Directory.h"
 
 int main()
 {
-	static DirectoryHandle dir;
 	static DataBaseCl db;
 	static UserIO foo;
 

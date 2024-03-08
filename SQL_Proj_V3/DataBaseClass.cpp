@@ -6,7 +6,6 @@
 #include <direct.h>
 
 #include "DataBaseClass.hpp"
-#include "Directory.h"
 
 DataBaseCl::DataBaseCl() {
 	//Actual db object for use within library
@@ -14,15 +13,15 @@ DataBaseCl::DataBaseCl() {
 	//???
 	stmt = nullptr;
 	//Pointer containing error num
-	error = nullptr;
+	error = 0;
 	//Error/State code
 	rc = NULL;
-
+	//default database path, no user inputs boo hoo
+	db_path = "C:\\Program Files\\Cornish_Project\\Cornish_Project.db";
 }
 
 int DataBaseCl::callback(void* NotUsed, int argc, char** argv, char** azColName) {
-	int i;
-	for (i = 0; i < argc; i++) {
+	for (int i = 0; i < argc; i++) {
 		printf("%s = %s", azColName[i], argv[i] ? argv[i] : "NULL");
 	}
 	printf("\n");
@@ -30,8 +29,7 @@ int DataBaseCl::callback(void* NotUsed, int argc, char** argv, char** azColName)
 }
 
 int DataBaseCl::callbacknoheader(void* NotUsed, int argc, char** argv, char** azColName) {
-	int i;
-	for (i = 0; i < argc; i++) {
+	for (int i = 0; i < argc; i++) {
 		std::cout << "--) ";
 		printf("%s", argv[i] ? argv[i] : "NULL");
 	}
@@ -40,7 +38,7 @@ int DataBaseCl::callbacknoheader(void* NotUsed, int argc, char** argv, char** az
 }
 
 void DataBaseCl::OpenDB(){
-		const char* cstr_db_path = dir.default_db_path.c_str();
+		const char* cstr_db_path = db_path.c_str();
 
 		rc = sqlite3_open(cstr_db_path, &db);
 		SQLErrorHandle();
@@ -58,17 +56,9 @@ void DataBaseCl::ListTable(std::string CommandParam) {
 	SQLErrorHandle();
 }
 
-void DataBaseCl::CreateTable(std::string CommandParam) {
-	std::string TableSQL = "CREATE TABLE IF NOT EXISTS " + CommandParam;
-	const char* TableSQL_c = TableSQL.c_str();
-
-	rc = sqlite3_exec(db, TableSQL_c, callback, NULL, &error);
-	SQLErrorHandle();
-}
-
 void DataBaseCl::SQLErrorHandle() const {
 		//Evaluates if database member, return code == 0 a
 		if (rc != SQLITE_OK){
-			std::cout << "Error:	" << error << std::endl;
+			std::cout << "Error:	" << *error << std::endl;
 		}
 }

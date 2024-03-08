@@ -7,7 +7,6 @@
 
 #include "DataBaseIO.h"
 #include "DataBaseClass.hpp"
-#include "Directory.h"
 
 UserIO::UserIO() {
 	lastInput = "hello";
@@ -31,36 +30,23 @@ std::string UserIO::GetInput() {
 	switch (InputMode){
 	case (0):
 		while (WaitingInput) {
-			std::string buffer;
-
-			std::getline(std::cin, buffer);
-			lastInput = buffer;
-
-			SelectCommand(&buffer);
-
-			Input = buffer;
+			std::getline(std::cin, Input);
+			lastInput = Input;
+			SelectCommand(&Input);
 		}
 		break;
 	case(1):
-		std::string buffer;
-
-		std::getline(std::cin, buffer);
-		InputResponse = buffer;
-
-		Input = buffer;
+		std::getline(std::cin, Input);
+		InputResponse = Input;
 		break;
 	} 
 	return Input;
 }
 
-std::string UserIO::GetCommand(std::string TotalIn) {
+void UserIO::GetCommand(std::string TotalIn) {
 
-	std::string CommandWord = "";
 	std::istringstream iss(TotalIn);
-	iss >> CommandWord;
-
-	lastCommand = CommandWord;
-	return CommandWord;
+	iss >> lastCommand;
 }
 
 void UserIO::GetCommandParam(std::string TotalIn) {
@@ -72,7 +58,7 @@ void UserIO::GetCommandParam(std::string TotalIn) {
 }
 
 void UserIO::SelectCommand(std::string* TotalIn) {
-	std::string CommandWord = GetCommand(*TotalIn);
+	GetCommand(*TotalIn);
 	GetCommandParam(*TotalIn);
 
 	if (lastCommand == "quit" or lastCommand == "exit") {
@@ -80,52 +66,29 @@ void UserIO::SelectCommand(std::string* TotalIn) {
 	}
 
 	switch (IOMode) {
-	case 0: {
-		DirectoryMode(CommandWord);
-		break;
-	}
-	case 1: {
-		DataBaseMode(CommandWord);
-		break;
-	}
-	case 2: {
-		TableMode(CommandWord);
-		break;
-	}
-	}
-}
-
-void UserIO::DirectoryMode(std::string CommandWord) {
-	if (CommandWord == "open" or CommandWord == "enter") {
-		EnterHandle(commandParam);
-	}
-	else if (CommandWord == "enter") {
-	}
-	else
-	{
-		ValidIn = false;
+		case 0: {
+			DataBaseMode();
+			break;
+		}
+		case 1: {
+			TableMode();
+			break;
+		}
+		case 2: {
+			TableInputMode();
+			break;
+		}
+		case 3: {
+			//TableReadMode();
+			break;
+		}
+		case 4: {
+			//TableEditMode();
+			break;
+		}
 	}
 }
 
-void UserIO::EnterHandle(std::string directory) {
-	
-	if (directory == "default") {
-	
-		std::cout << "Using default directory" << std::endl;
-		IOMode = 1;
-		dir.current_path = 0;
-	}
-	else if(dir.ValidPath(directory)) {
-		dir.user_dir = (directory);
-		std::cout << "Using user-defined directory." << std::endl;
-		IOMode = 1;
-		dir.current_path = 1;
-	}
-	else {
-		std::cout << "Invalid directory. Please try another directory." << std::endl;
-	}
-
-}
 
 void UserIO::ExitHandle() {
 	{
@@ -133,7 +96,7 @@ void UserIO::ExitHandle() {
 
 		InputMode = 1;
 
-		while ((WaitingInput) or InputMode == 1) {
+		while (InputMode == 1) {
 			std::string Input = GetInput();
 
 			if (Input == "Y") {
@@ -147,103 +110,55 @@ void UserIO::ExitHandle() {
 			else {
 				std::cout << "That is not a valid response, please try again." << std::endl;
 				ValidIn = false;
-				WaitingInput = true;
 			}
 		}
 	}
 }
 
-void UserIO::DataBaseMode(std::string CommandWord) {
-	if (CommandWord == "open" or CommandWord == "enter") {
+void UserIO::DataBaseMode() {
+	if (lastCommand == "open" or lastCommand == "enter") {
 		ValidIn = true;
-		DataBaseEnterHandle(commandParam);
+		DataBaseEnterHandle();
+	}
+	else  if (lastCommand == "input") {
+		ValidIn = true;
 		IOMode = 2;
-	}
-	else if (CommandWord == "return") {
-		std::cout << "Returning to directory mode" << std::endl;
-		IOMode = 0;
-	}
-	else
-	{
+	} else {
 		ValidIn = false;
 	}
 }
 
-void UserIO::DataBaseEnterHandle(std::string FileName) {
-	if (commandParam == "default") {
+void UserIO::DataBaseEnterHandle() {
+	if (commandParam == "") {
 		std::cout << "Opening default database" << std::endl;
 		db.OpenDB();
+		IOMode = 1;
 	}
-	else if (dir.ValidPath(dir.user_dir + FileName)) {
-
+	else {
+		std::cout << "That is not a valid command, please try again." << std::endl;
+		ValidIn = false;
+		WaitingInput = true;
 	}
 
 }
 
-void UserIO::TableMode(std::string CommandWord) {
-	if (CommandWord == "list") {
+void UserIO::TableMode() {
+	if (lastCommand == "list") {
 		db.ListTable(commandParam);
 	}
-	else if (CommandWord == "tablemake") {
-		CreateTable();
-	}
-	else if (CommandWord == "headers") {
+	else if (lastCommand == "headers") {
 		QueryTableHeaders();
 	}
-	else if (CommandWord == "quit" or CommandWord == "exit") {
+	else if (lastCommand == "quit" or lastCommand == "exit") {
 		ExitHandle();
 	}
-}
-
-void UserIO::CreateTable() {
-	std::cout << "What would you like to call the table: " << std::endl;
-	InputMode = 1;
-	std::string TableName = GetInput();
-	std::cout << "How many headers would you like: " << std::endl;
-	std::string TableHeadNum;
- 
-	ValidIn = false;
-	while (ValidIn == false) {
-		std::string TableHeadNumStr = GetInput();
-		for (int i = 0; i < TableHeadNumStr.length(); i++)
-			if (isdigit(TableHeadNumStr[i]) == false) {
-				ValidIn = false;
-				break;
-			}
-			else {
-				ValidIn = true;
-			}
-		if (ValidIn == true) {
-			WaitingInput = false;
-			TableHeadNum = TableHeadNumStr;
-		}
-		else if (ValidIn == false) {
-			std::cout << "That is not a valid response. Please try again." << std::endl;
-		}
-	}
-	WaitingInput = true;
-
-	std::vector<std::string> HeadNames;
-	for (int i = 0; i < stoi(TableHeadNum); i++) {
-		std::cout << "What is the title of header number " << (i + 1) << ":" << std::endl;
-		HeadNames.push_back(GetInput());
-	}
-	
-	std::string HeadsInOrder = "";
-	for (int i = 0; i < stoi(TableHeadNum); i++) {
-		HeadsInOrder = HeadsInOrder + HeadNames.at(i) + " varchar(150),";
-	}
-	
-	if (!HeadsInOrder.empty()) {
-		HeadsInOrder.pop_back();
-	}
-
-	std::string SQL_Code = TableName + "(" + HeadsInOrder + ")";
-
-	db.CreateTable(SQL_Code);
 }
 
 void UserIO::QueryTableHeaders() {
 	std::string SQL_query = "SELECT name FROM PRAGMA_table_info('" + commandParam + "');";
 	db.ManipDB(&SQL_query);
+}
+
+void UserIO::TableInputMode() {
+
 }

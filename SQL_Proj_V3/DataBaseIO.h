@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DataBaseClass.hpp"
-#include "Directory.h"
 
 class UserIO {
 	std::string lastInput;
@@ -17,23 +16,20 @@ class UserIO {
 
 	void SelectCommand(std::string *TotalIn);
 	void ExitHandle();
-	void EnterHandle(std::string path);
 
-	void DataBaseEnterHandle(std::string FileName);
+	void DataBaseEnterHandle();
 
 	void GetCommandParam(std::string TotalIn);
-	std::string GetCommand(std::string TotalIn);
+	void GetCommand(std::string TotalIn);
 
-	void DirectoryMode(std::string CommandWord);
-	void DataBaseMode(std::string CommandWord);
-	void TableMode(std::string CommandWord);
+	void DataBaseMode();
+	void TableMode();
 
-	void CreateTable();
 	void QueryTableHeaders();
 
+	void TableInputMode();
 
 	DataBaseCl db;
-	DirectoryHandle dir;
 public:
 	std::string GetInput();
 	UserIO();
